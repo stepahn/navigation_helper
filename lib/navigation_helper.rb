@@ -60,11 +60,19 @@ module NavigationHelper
       has_subtitles? && @options.has_key?(:hover_text) && @options[:hover_text]
     end
 		
+    def wants_replace_text?
+      has_subtitles? && @options.has_key?(:replace_text) && @options[:replace_text]
+    end
+
     # turns <tt>:contact_me</tt> into 'Contact Me'
     def text_for(link)
-      link.to_s.humanize.split.inject([]) do |words, word|
+      if wants_replace_text?
+        SUBTITLES[link]
+      else
+        link.to_s.humanize.split.inject([]) do |words, word|
         words << word.capitalize
-      end.join(' ')
+        end.join(' ')
+      end
     end
 		
     # returns the method used for checking if links are allowed to
@@ -172,7 +180,8 @@ module NavigationHelper
       navigation = Navigation.new(sections, options)
       items = []
       navigation.sections.each do |link|
-        current_tab = controller.class.instance_variable_get("@current_tab") || controller.controller_name.to_sym
+        current_tab = controller.class.instance_variable_get("@current_tab") || 
+          controller.instance_variable_get("@current_tab") || controller.controller_name.to_sym
         css = (link == current_tab ? 'current' : nil)
         if navigation.methods_to_authorize.include?(link)
           items << content_tag(:li, construct(navigation, link), :class => [css, navigation.authorized_css].compact.join(' ')) if allowed?(navigation)
@@ -191,7 +200,7 @@ module NavigationHelper
         
         if nav.wants_hover_text?
           link = link_to(text, send("#{section.to_s.downcase}_path"), :title => SUBTITLES[section])
-        elsif nav.wants_subtitles?
+        elsif nav.wants_subtitles? && !nav.wants_replace_text?
           link += content_tag(:span, SUBTITLES[section])
         end
   			

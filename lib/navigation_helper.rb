@@ -60,6 +60,7 @@ module NavigationHelper
       has_subtitles? && @options.has_key?(:hover_text) && @options[:hover_text]
     end
 		
+		# determines if the subtitles should replace the link text
     def wants_replace_text?
       has_subtitles? && @options.has_key?(:replace_text) && @options[:replace_text]
     end

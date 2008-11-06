@@ -18,7 +18,7 @@ h2. Configuration Options:
 * @with => :authorization_method@ - specifies the method to use to authorize against (defaults to @logged_in?@ method)
 ** note: requires the @authorize@ option to actually work
 * @hover_text => (true|false)@ - specifies to use the subtitles as hovertext instead of showing up as span's under the links
-* @replace_text => (true|false)@ - specifies to use the subtitles as anchor text instead of showing up as span's under the links
+* @link_text => (true|false)@ - specifies to use the subtitles as link text instead of symbols name
 * @authorized_css => 'custom_css_class'@ - specifies the css class that goes on all authorized tabs (defaults to 'authorized_nav_link')
 
 h2. Installation: Get it at GitHub
@@ -223,13 +223,14 @@ According to how the @navigation@ helper works, you would have to replace @:home
 And you're set. Now whenever you're on any action within the PublicController, the navigation helper
 will match the current tab up against @:home@ instead of @:public@.
 
+
 h3. Example 9
 
-Maybe you want your anchor text to be something beside the named routes to have some freedom in your choice of route names (this can be handy in case of i18n). By setting the @:replace_text@ option to @true@, the subtitles will become the anchor text of the links instead.
+Maybe you want your subtitles to be the text that is used by the links! By setting the @:link_text@ option to @true@, the subtitles will then become the link text on the links instead. Redoing the above example with hover text, we get:
 
-<pre><code>navigation [:home, 'Start Here', :about, 'Learn More'], :replace_text => true</code></pre>
+<pre><code>navigation [:home, 'Start Here', :about, 'Learn More'], :link_text => true</code></pre>
 
-Notice the @:hover_text => true@ option. This would render...
+Notice the @:link_text => true@ option. This would render...
 
 <pre><code>
   <ul class="nav_bar">
@@ -242,7 +243,7 @@ Notice the @:hover_text => true@ option. This would render...
   </ul>
 </code></pre>
 
-The generated link text is discarded in favor of your passed text.
+Of course this will work in conjunction with the :hover_text => true as well. 
 
 h2. License
 

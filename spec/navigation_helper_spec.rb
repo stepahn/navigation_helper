@@ -103,10 +103,22 @@ describe "NavigationHelper Plugin: Navigator class" do
         nav.wants_hover_text?.should eql(false)
         nav.wants_subtitles?.should eql(true)
       end
+      
+      it "should want subtitles even if link text is explicitly set to false" do
+        nav = nav_with_subtitles(:link_text => false)
+        nav.wants_link_text?.should eql(false)
+        nav.wants_subtitles?.should eql(true)
+      end
 
       it "should want hover text instead of subtitles" do
         nav = nav_with_subtitles(:hover_text => true)
         nav.wants_hover_text?.should eql(true)
+        nav.wants_subtitles?.should eql(false)
+      end
+      
+      it "should want link text instead of subtitles" do
+        nav = nav_with_subtitles(:link_text => true)
+        nav.wants_link_text?.should eql(true)
         nav.wants_subtitles?.should eql(false)
       end
       

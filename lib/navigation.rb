@@ -40,6 +40,7 @@ module RPH
       # * +with+ - specifies the method to use to authorize against (defaults to <tt>logged_in?</tt> method...
       #   Note - requires the <tt>authorize</tt> option to work)
       # * +hover_text+ - specifies to use the subtitles as hovertext instead of showing up as span's under the links
+      # * +link_text+ - specifies to use the subtitles as link text instead of using the symbol text
       def navigation(sections, options={})
         navigation, items = Navigator.new(sections, options), []
 
@@ -60,7 +61,7 @@ module RPH
       private
       # builds the actual link and determines if subtitles are present
       def construct(nav, section)
-        text = nav.text_for(section)
+        text = nav.wants_link_text? ? SUBTITLES[section] : nav.text_for(section)
         path = ROUTES[section.to_sym] || send("#{section.to_s.downcase}_path")
         link = link_to(text, path)
 

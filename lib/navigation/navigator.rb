@@ -96,12 +96,17 @@ module RPH
 	
       # default behavior if subtitles are present without the <tt>:hover_text => true</tt> option
       def wants_subtitles?
-        has_subtitles? && !wants_hover_text?
+        has_subtitles? && !wants_hover_text? && !wants_link_text?
       end
 	
       # determines if the subtitles are to be shown as link titles onhover
       def wants_hover_text?
         has_subtitles? && @options.has_key?(:hover_text) && @options[:hover_text]
+      end
+
+      #determines if the subtitles should also be the link text
+      def wants_link_text?
+        has_subtitles? && @options.has_key?(:link_text) && @options[:link_text]
       end
 	
       # turns <tt>:contact_me</tt> into 'Contact Me'
